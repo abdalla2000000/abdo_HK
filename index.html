@@ -3,24 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ABDOHK | Hacker System</title>
+<title>ABDOHK | حسابات ورسائل</title>
 
 <style>
-*{box-sizing:border-box}
 body{
     margin:0;
-    font-family:monospace;
-    background:black;
-    color:#00ff88;
-    overflow:hidden;
-}
-
-/* خلفية هكر */
-canvas{
-    position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
-    z-index:-1;
+    font-family:Arial;
+    background:#111;
+    color:#fff;
 }
 
 /* عام */
@@ -32,54 +22,55 @@ canvas{
 }
 
 .box{
-    background:rgba(0,0,0,.85);
+    background:#000;
     padding:25px;
-    width:360px;
-    border:1px solid #00ff88;
-    box-shadow:0 0 30px #00ff88;
-    border-radius:10px;
+    width:340px;
+    border-radius:12px;
+    border:2px solid #00b7ff;
+    box-shadow:0 0 25px #00b7ff;
     text-align:center;
 }
 
+/* اسم الموقع */
 .logo{
-    font-size:32px;
-    color:red;
-    text-shadow:0 0 15px red;
+    font-size:28px;
+    font-weight:bold;
+    color:#ff0000;
     margin-bottom:15px;
+    text-shadow:0 0 10px red;
 }
 
 .box h2{
-    color:#00ff88;
+    color:#00b7ff;
 }
 
 .box input{
     width:100%;
     padding:10px;
-    margin:6px 0;
-    background:black;
-    border:1px solid #00ff88;
-    color:#00ff88;
+    margin:8px 0;
+    border:none;
+    border-radius:5px;
+    outline:none;
 }
 
 .box button{
     width:100%;
     padding:10px;
-    background:#00ff88;
+    background:#00b7ff;
     border:none;
+    color:#fff;
     cursor:pointer;
-    color:black;
-    font-weight:bold;
-    margin-top:5px;
+    font-size:16px;
 }
 
 .box button:hover{
-    box-shadow:0 0 15px #00ff88;
+    background:#0091cc;
 }
 
 .link{
     margin-top:10px;
+    color:#00b7ff;
     cursor:pointer;
-    color:#00ffaa;
 }
 
 /* الملف الشخصي */
@@ -91,164 +82,201 @@ canvas{
     text-align:center;
 }
 
-.profile-box{
-    border:1px solid #00ff88;
-    padding:15px;
-    box-shadow:0 0 20px #00ff88;
-}
-
-.msg{
-    color:#00ffaa;
-    margin-top:10px;
-}
-
 .logout{
     background:red;
-    color:white;
-    border:none;
     padding:10px;
-    margin-top:15px;
+    border:none;
+    color:#fff;
     cursor:pointer;
+    margin-top:15px;
+}
+
+/* الرسائل */
+.msg-box{
+    background:#222;
+    border:1px solid #00b7ff;
+    padding:10px;
+    margin-top:10px;
+    border-radius:8px;
+    text-align:right;
+}
+
+.msg-box span{
+    color:#00b7ff;
+    font-size:12px;
 }
 </style>
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
-
 <!-- تسجيل الدخول -->
 <div id="login" class="center">
-  <div class="box">
-    <div class="logo">ABDOHK</div>
-    <h2>ACCESS LOGIN</h2>
-    <input id="loginUser" placeholder="USERNAME">
-    <input id="loginPass" type="password" placeholder="PASSWORD">
-    <button onclick="login()">LOGIN</button>
-    <div class="link" onclick="showRegister()">CREATE ACCOUNT</div>
-    <p id="loginError"></p>
-  </div>
+    <div class="box">
+        <div class="logo">ABDOHK</div>
+        <h2>تسجيل الدخول</h2>
+
+        <input id="loginUser" placeholder="اسم المستخدم">
+        <input id="loginPass" type="password" placeholder="كلمة السر">
+        <button onclick="login()">دخول</button>
+
+        <div class="link" onclick="showRegister()">إنشاء حساب جديد</div>
+        <p id="loginError"></p>
+    </div>
 </div>
 
 <!-- إنشاء حساب -->
 <div id="register" class="center" style="display:none">
-  <div class="box">
-    <div class="logo">ABDOHK</div>
-    <h2>NEW ACCOUNT</h2>
-    <input id="regUser" placeholder="USERNAME">
-    <input id="regPass" type="password" placeholder="PASSWORD">
-    <input id="regEmail" placeholder="EMAIL">
-    <input id="regBirth" type="date">
-    <button onclick="register()">REGISTER</button>
-    <div class="link" onclick="showLogin()">BACK TO LOGIN</div>
-    <p id="regError"></p>
-  </div>
+    <div class="box">
+        <div class="logo">ABDOHK</div>
+        <h2>إنشاء حساب</h2>
+
+        <input id="regUser" placeholder="اسم المستخدم">
+        <input id="regPass" type="password" placeholder="كلمة السر">
+        <input id="regBirth" type="date" placeholder="تاريخ الميلاد">
+
+        <button onclick="register()">تسجيل</button>
+        <div class="link" onclick="showLogin()">لدي حساب</div>
+        <p id="regError"></p>
+    </div>
 </div>
 
 <!-- الملف الشخصي -->
 <div id="profile">
-  <div class="profile-box">
     <h2 id="profileName"></h2>
-    <p id="profileEmail"></p>
-    <p id="profileBirth"></p>
+    <p id="birthInfo"></p>
+    <p>✔ تم تسجيل الدخول بنجاح</p>
 
     <hr>
 
-    <h3>EDIT PROFILE</h3>
-    <input id="editEmail">
-    <input id="editBirth" type="date">
-    <button onclick="saveProfile()">SAVE DATA</button>
-    <p id="saveMsg" class="msg"></p>
+    <h3>📨 إرسال رسالة</h3>
+    <input id="toUser" placeholder="اسم المستخدم">
+    <input id="msgText" placeholder="نص الرسالة">
+    <button onclick="sendMessage()">إرسال</button>
 
-    <button class="logout" onclick="logout()">LOGOUT</button>
-  </div>
+    <hr>
+
+    <h3>📥 الرسائل الواردة</h3>
+    <div id="messagesBox"></div>
+
+    <button class="logout" onclick="logout()">تسجيل خروج</button>
 </div>
 
 <script>
-// Matrix Background
-const c = document.getElementById("matrix");
-const ctx = c.getContext("2d");
-c.width = innerWidth; c.height = innerHeight;
-const letters = "01ABDOHK$#@";
-const font = 14;
-const cols = c.width / font;
-let drops = Array(Math.floor(cols)).fill(1);
-
-function draw(){
-    ctx.fillStyle="rgba(0,0,0,0.1)";
-    ctx.fillRect(0,0,c.width,c.height);
-    ctx.fillStyle="#00ff88";
-    ctx.font=font+"px monospace";
-    drops.forEach((y,i)=>{
-        const text = letters[Math.floor(Math.random()*letters.length)];
-        ctx.fillText(text,i*font,y*font);
-        if(y*font > c.height && Math.random() > 0.975) drops[i]=0;
-        drops[i]++;
-    });
+// التنقل
+function showRegister(){
+    login.style.display="none";
+    register.style.display="flex";
 }
-setInterval(draw,33);
+function showLogin(){
+    register.style.display="none";
+    login.style.display="flex";
+}
 
-// تنقل
-function showRegister(){login.style.display="none";register.style.display="flex";}
-function showLogin(){register.style.display="none";login.style.display="flex";}
-
-// تسجيل
+// إنشاء حساب
 function register(){
-    const u=regUser.value.trim(),p=regPass.value.trim(),
-          e=regEmail.value.trim(),b=regBirth.value;
-    if(!u||!p||!e||!b){regError.textContent="DATA REQUIRED";return;}
-    let users=JSON.parse(localStorage.getItem("users"))||{};
-    if(users[u]){regError.textContent="USER EXISTS";return;}
-    users[u]={password:p,email:e,birth:b};
-    localStorage.setItem("users",JSON.stringify(users));
-    localStorage.setItem("currentUser",u);
-    localStorage.setItem("logged","true");
+    const user = regUser.value.trim();
+    const pass = regPass.value.trim();
+    const birth = regBirth.value;
+
+    if(!user || !pass || !birth){
+        regError.textContent="❌ أدخل جميع البيانات";
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+
+    if(users[user]){
+        regError.textContent="❌ الاسم مستخدم";
+        return;
+    }
+
+    users[user] = {password: pass, birth};
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("currentUser", user);
+    localStorage.setItem("logged", "true");
+
     openProfile();
 }
 
-// دخول
+// تسجيل دخول
 function login(){
-    let users=JSON.parse(localStorage.getItem("users"))||{};
-    if(users[loginUser.value] && users[loginUser.value].password===loginPass.value){
-        localStorage.setItem("currentUser",loginUser.value);
-        localStorage.setItem("logged","true");
+    const user = loginUser.value;
+    const pass = loginPass.value;
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+
+    if(users[user] && users[user].password === pass){
+        localStorage.setItem("currentUser", user);
+        localStorage.setItem("logged", "true");
         openProfile();
-    }else loginError.textContent="ACCESS DENIED";
+    }else{
+        loginError.textContent="❌ بيانات غير صحيحة";
+    }
 }
 
-// فتح الملف
+// فتح الملف الشخصي
 function openProfile(){
     login.style.display="none";
     register.style.display="none";
     profile.style.display="block";
-    const u=localStorage.getItem("currentUser");
-    const d=JSON.parse(localStorage.getItem("users"))[u];
-    profileName.textContent="USER: "+u;
-    profileEmail.textContent="EMAIL: "+d.email;
-    profileBirth.textContent="BIRTH: "+d.birth;
-    editEmail.value=d.email;
-    editBirth.value=d.birth;
+
+    const user = localStorage.getItem("currentUser");
+    const users = JSON.parse(localStorage.getItem("users"));
+    profileName.textContent = "👤 مرحباً " + user;
+    birthInfo.textContent = "🎂 تاريخ الميلاد: " + users[user].birth;
+
+    loadMessages();
 }
 
-// حفظ
-function saveProfile(){
-    let users=JSON.parse(localStorage.getItem("users"));
-    const u=localStorage.getItem("currentUser");
-    users[u].email=editEmail.value;
-    users[u].birth=editBirth.value;
-    localStorage.setItem("users",JSON.stringify(users));
-    saveMsg.textContent="✔ DATA SAVED";
-    openProfile();
-}
-
-// خروج
+// تسجيل خروج
 function logout(){
     localStorage.removeItem("logged");
     localStorage.removeItem("currentUser");
     location.reload();
 }
 
-if(localStorage.getItem("logged")==="true") openProfile();
+/* ===== الرسائل ===== */
+function sendMessage(){
+    const from = localStorage.getItem("currentUser");
+    const to = toUser.value.trim();
+    const text = msgText.value.trim();
+
+    if(!to || !text){
+        alert("أدخل اسم المستخدم والرسالة");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("users")) || {};
+    if(!users[to]){
+        alert("❌ المستخدم غير موجود");
+        return;
+    }
+
+    let messages = JSON.parse(localStorage.getItem("messages")) || [];
+    messages.push({from, to, text});
+    localStorage.setItem("messages", JSON.stringify(messages));
+
+    msgText.value="";
+    loadMessages();
+}
+
+function loadMessages(){
+    const user = localStorage.getItem("currentUser");
+    const messages = JSON.parse(localStorage.getItem("messages")) || [];
+    messagesBox.innerHTML="";
+
+    messages.filter(m=>m.to===user).forEach(m=>{
+        const div = document.createElement("div");
+        div.className="msg-box";
+        div.innerHTML = `<span>من: ${m.from}</span><br>${m.text}`;
+        messagesBox.appendChild(div);
+    });
+}
+
+// دخول تلقائي
+if(localStorage.getItem("logged")==="true"){
+    openProfile();
+}
 </script>
 
 </body>
-</html>
+    </html>
